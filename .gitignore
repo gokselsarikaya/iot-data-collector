@@ -1,0 +1,14 @@
+# Node.js
+node_modules
+.env
+
+# Docker
+*.log
+docker-volume/
+mongo-data/
+mosquitto/data/
+mosquitto/log/
+
+# System files
+.DS_Store
+
