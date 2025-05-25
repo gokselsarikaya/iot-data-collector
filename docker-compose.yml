@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   iot-backend:
@@ -12,6 +12,8 @@ services:
     depends_on:
       - mongodb
       - mosquitto
+    networks:
+      - iot_network
 
   mongodb:
     image: mongo:6
@@ -20,9 +22,11 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - iot_network
 
   mosquitto:
-    image: eclipse-mosquitto:2
+    image: eclipse-mosquitto
     container_name: mosquitto
     ports:
       - "1883:1883"
@@ -31,6 +35,9 @@ services:
       - ./mqtt/config:/mosquitto/config
       - ./mqtt/data:/mosquitto/data
       - ./mqtt/log:/mosquitto/log
+    networks:
+      - iot_network
+    restart: unless-stopped
 
   prometheus:
     image: prom/prometheus
@@ -39,8 +46,28 @@ services:
       - "9090:9090"
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - iot_network
     depends_on:
+      - mosquitto-exporter
       - iot-backend
+      - mosquitto
+    restart: unless-stopped
+
+
+  mosquitto-exporter:  # Add Mosquitto Exporter
+    image: sapcc/mosquitto-exporter:latest
+    platform: linux/amd64
+    container_name: mosquitto-exporter
+    ports:
+      - "9101:9234"
+    command:
+      - --endpoint=tcp://mosquitto:1883
+      - --bind-address=0.0.0.0:9234
+    networks:
+      - iot_network
+    depends_on:
+      - mosquitto
 
   grafana:
     image: grafana/grafana
@@ -49,10 +76,18 @@ services:
       - "3001:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
     depends_on:
       - prometheus
+    networks:
+      - iot_network
 
 volumes:
   mongo-data:
   grafana-storage:
+
+networks:
+  iot_network:
+    driver: bridge
 
