@@ -1,6 +1,6 @@
-# 📡 IoT Data Collector
+# 📡 IoT Data Collector – Local & Cloud-Ready Data Ingestion Pipeline
 
-An end-to-end, containerized IoT data ingestion and monitoring pipeline. It receives MQTT messages, stores them in MongoDB, and provides real-time observability via Prometheus and Grafana — all built using Infrastructure as Code (IaC) principles.
+A containerized IoT data ingestion pipeline built with a local-first approach using MQTT, MongoDB, Prometheus, and Grafana — then extended to AWS with IoT Core, SQS, DynamoDB, EKS, and VPC components using Infrastructure as Code (IaC) best practices.
 
 ---
 
@@ -57,7 +57,7 @@ iot-data-collector/
 ---
 
 
-## 📐 Architecture
+## 📐 Local (On Prem) Architecture
 
 ```text
            [MQTT Device]
@@ -77,6 +77,42 @@ iot-data-collector/
                     └──────────┘
 ```                  
 
+
+---
+
+## ☁️ Cloud Architecture (AWS)
+
+The solution was designed to be cloud-ready and migrated to AWS services for scalability, resilience, and security. 
+
+Key services used:
+- **Amazon IoT Core** for device ingestion via MQTT.
+- **Amazon SQS** for decoupled, reliable message processing.
+- **Amazon DynamoDB** for optional direct storage (low-latency paths).
+- **Amazon EKS** hosts the IoT data collector and Prometheus instances.
+- **Grafana** deployed in-cluster for visualization.
+- **VPC, Subnets, NAT Gateway** for secure networking and private connectivity.
+- **CloudWatch Logs** for centralized logging.
+
+📌 The full cloud architecture diagram is included in [`docs/architecture.drawio`](docs/iot-data-collector.drawio.png).
+
+![Cloud Architecture](docs/iot-data-collector.drawio.png)
+
+---
+
+## ☁️ Cloud Deployment Overview
+
+This project includes a cloud-native migration path:
+
+- IoT devices send data to **Amazon IoT Core** via MQTT.
+- IoT Core uses **Rules Engine** to route data to:
+  - **SQS** (main ingestion path)
+  - **DynamoDB** (optional low-throughput use cases)
+- An **EKS-based data collector** consumes messages from SQS, stores them in Prometheus.
+- Monitoring is provided by **Prometheus + Grafana**, deployed in the same EKS cluster.
+- Infrastructure is secured within a **VPC** with private/public subnets, NAT Gateway, and VPC Endpoints.
+- Deployment is done via Terraform. Ready for automation.
+
+📁 See the [architecture diagram](docs/iot-data-collector.drawio.png) for details.
 
 ---
 
@@ -151,16 +187,14 @@ MQTT + MongoDB insert logic (mocked in mqtt.test.js)
 
 ---
 
-## 🛠️ Future Work
+## 🧠 What I’d Do With More Time
 
-- Add alerting rules in Prometheus.
-- Improve security (auth, TLS).
-- CI/CD setup.
-
-
----
-
-## 🙌 Contribution
-Feel free to fork or suggest improvements. PRs welcome!
+- Automate the AWS deployment using Terraform or CDK.
+- Add E2E integration tests using real AWS services (IoT Core → SQS → EKS).
+- Set up CI/CD pipeline using GitHub Actions or AWS CodePipeline.
+- Implement fine-grained IAM policies for least privilege.
+- Expand Prometheus rules with alerts (e.g., dead-letter queue thresholds).
+- Add support for schema validation and rate limiting on the ingestion path.
+- Gather more NFR and implement design.
 
 ---
