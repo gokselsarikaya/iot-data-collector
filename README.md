@@ -50,17 +50,6 @@ iot-data-collector/
 │   │           └── prometheus-ds.yml
 │   └── prometheus/
 │       └── prometheus.yml
-├── helm/
-│   ├── api-chart/
-│   │   ├── Chart.yaml
-│   │   ├── values.yaml
-│   │   └── templates/
-│   │       ├── deployment.yaml
-│   │       └── service.yaml
-│   ├── mongo-chart/
-│   ├── mqtt-chart/
-│   ├── prometheus-chart/
-│   └── grafana-chart/
 ├── docker-compose.yml
 └── README.md
 ```
@@ -80,33 +69,14 @@ iot-data-collector/
          ┌────────────────┐
          │   Node.js App  │◀─── GET /
          └────────────────┘
-         ↑               ↓
+         ↓               ↓
  [MongoDB Inserts]   [Prometheus /metrics]
                           ↓
                     ┌──────────┐
                     │ Grafana  │
                     └──────────┘
-                    
+```                  
 
----
-
-## 🐳 Helm Charts
-
-Helm charts are added under the `helm/` directory to enable Kubernetes deployment:
-
-- `api-chart`: Deploys the Node.js backend.
-- `mongo-chart`: MongoDB deployment.
-- `mqtt-chart`: Mosquitto broker.
-- `prometheus-chart`: Prometheus setup.
-- `grafana-chart`: Grafana with provisioning.
-
-To deploy using Helm:
-```bash
-cd helm/api-chart
-helm install api-release .
-```
-
-Repeat similarly for other charts.
 
 ---
 
@@ -115,7 +85,7 @@ Repeat similarly for other charts.
 All services are managed via `docker-compose.yml`.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/iot-data-collector.git
+git clone https://github.com/gokselsarikaya/iot-data-collector.git
 cd iot-data-collector
 docker-compose up --build
 ```
@@ -183,10 +153,10 @@ MQTT + MongoDB insert logic (mocked in mqtt.test.js)
 
 ## 🛠️ Future Work
 
-- Add unit tests for API.
 - Add alerting rules in Prometheus.
 - Improve security (auth, TLS).
 - CI/CD setup.
+
 
 ---
 
