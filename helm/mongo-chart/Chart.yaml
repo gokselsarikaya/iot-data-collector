@@ -1,0 +1,6 @@
+apiVersion: v2
+name: mongo-chart
+description: MongoDB deployment for storing IoT data
+type: application
+version: 0.1.0
+appVersion: "6.0"

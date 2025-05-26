@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+data:
+  mqtt-dashboard.json: |
+    {{ .Files.Get "dashboards/mqtt-dashboard.json" | indent 4 }}
