@@ -1,6 +1,0 @@
-apiVersion: v2
-name: grafana-chart
-description: Grafana for observability dashboards
-type: application
-version: 0.1.0
-appVersion: "10.0"

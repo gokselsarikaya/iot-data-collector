@@ -1,8 +1,0 @@
-image:
-  repository: eclipse-mosquitto
-  tag: latest
-  pullPolicy: IfNotPresent
-
-service:
-  type: ClusterIP
-  port: 1883

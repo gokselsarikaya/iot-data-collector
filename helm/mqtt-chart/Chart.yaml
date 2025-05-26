@@ -1,6 +1,0 @@
-apiVersion: v2
-name: mqtt-chart
-description: Mosquitto MQTT broker
-type: application
-version: 0.1.0
-appVersion: "2.0"

@@ -1,6 +1,0 @@
-apiVersion: v2
-name: prometheus-chart
-description: Prometheus for metrics scraping
-type: application
-version: 0.1.0
-appVersion: "2.48"
