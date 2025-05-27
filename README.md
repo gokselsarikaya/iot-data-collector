@@ -34,6 +34,32 @@ iot-data-collector/
 │   │   ├── tests/
 │   │   │   ├── api.test.js     # API tests
 │   │   │   ├── mqtt.test.js    # MQTT + MongoDB integration tests (mocked)
+├── docs/
+│   └── iot-data-collector.drawio.png   #Cloud Architecture Diagram
+├── infra/
+│   ├── cicd/
+│   ├── k8s/
+│   │   ├── iot-api-deployment.yaml
+│   │   ├── iot-api-service.yaml
+│   ├── terraform/
+│   │       ├── modules/
+│   │       │   ├── apps
+│   │       │   │   └── main.tf
+│   │       │   │   └── outputs.tf
+│   │       │   ├── dynamodb
+│   │       │   │   └── main.tf
+│   │       │   ├── eks
+│   │       │   │   └── main.tf
+│   │       │   │   └── variables.tf
+│   │       │   ├──  iot
+│   │       │   │   └── main.tf
+│   │       │   │   └── outputs.tf
+│   │       │   │   └── variables.tf
+│   │       │   └── vpc
+│   │       │       └── main.tf
+│   │       └── main.tf
+│   │       └── outputs.tf
+│   │       └── variables.tf
 ├── mqtt/
 │   ├── config/
 │   │   └── mosquitto.conf
@@ -51,6 +77,7 @@ iot-data-collector/
 │   └── prometheus/
 │       └── prometheus.yml
 ├── docker-compose.yml
+├── jest.config.js
 └── README.md
 ```
 
